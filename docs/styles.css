@@ -1,77 +1,73 @@
-/* Réinitialisation de la mise en page et styles de base */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
-body {
-    font-family: Calibri, Arial, sans-serif;
-    text-decoration: none; /* Supprime le soulignement */
+body{
+  display:flex;
+  min-height:100vh;
+  flex-direction:column;
+  margin:0;
+  padding:0;
+  font-family:sans-serif;
+  font-size:18px;
+  line-height:1.5;
+  color:#fff;
+  background:#098;
 }
 
-a {
-    font-family: Calibri, Arial, sans-serif;
-    text-decoration: none; /* Supprime le soulignement */
+.header,
+.footer{
+  background:#fff;
+  color:#098;
 }
 
-/* Thème principal */
-body {
-    background-color: #f0f0f0;
-    color: #333;
+.nav,
+.footer-nav,
+.main{
+  max-width:1200px;
+  margin:0 auto;
 }
 
-.navigation-bar a {
-    text-decoration: none; /* Supprime le soulignement */
-    color: #fff; /* Définit la couleur du texte en blanc */
+.main{
+  flex:1;
+  padding:25px;
+
 }
 
-.navigation-bar {
-    background-color: #0055b3;
-    color: #f0f0f0;
-    text-align: center;
-    padding: 10px 0;
+.flex{
+  display:flex;
 }
 
-.navigation-bar ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+.footer-nav.flex{
+  justify-content:center;  
 }
 
-.nav-link, a {
-    text-decoration: none;
-    color: #f0f0f0;
-    transition: transform 0.2s; /* Effet de survol */
+.flex-item{
+  padding:12px;
 }
 
-.nav-link:hover, a {
-    transform: scale(1.1); /* Zoom agréable au survol */
+.flex-item.home{
+  margin:0 auto 0 0;
+  font-size:1em;
+  border-bottom:5px solid rgb(0, 116, 102);
 }
 
-.flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+.flex-item.home a{
+  border:none;
 }
 
-.flex-item {
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    flex: 1 1 calc(33.33% - 40px);
+a{
+  color:#06f;
+  text-decoration:none;
+  display:block;
+  border-bottom:5px solid #fff;
 }
 
-class-hover, a {
-    cursor: pointer;
-    transition: color 0.2s;
+a:hover{
+  border-bottom:5px solid rgb(0, 116, 102);
+  transition:border-color 400ms ease-out;
 }
 
-.class-hover:hover, a {
-    color: #0055b3;
+p{
+  max-width:35em;
 }
