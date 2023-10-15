@@ -1,0 +1,53 @@
+.a-img-txt{
+    display:grid; 
+  }
+   
+  /* les enfants se superposent */
+  .a-img-txt>*{
+    grid-area:1/1/-1/-1; 
+    /* raccourci pour grid-row et grid-column */
+  }
+   
+  /* le texte */
+  .a-txt{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+    opacity:0;
+    transition:opacity .8s;
+  }
+   
+  /* les couleurs c1 et c2 */
+  .c1{
+      background:#ff6600cc; /* avec alpha */
+  }
+   
+  .c2{
+      background:#6600ffcc; /* avec alpha */
+  }
+   
+  /* le survol */
+  .a-txt:hover{
+    opacity:1;
+  }
+   
+  /* la déco */
+  body{
+    background:#098;
+    margin:24px;
+    font-family:sans-serif;
+    font-size:21px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-gap:24px;
+    gap:24px;
+  }
+   
+  img{
+    max-width:100%;
+    height:auto;
+  }
+  a{
+    text-decoration:none;
+  }
