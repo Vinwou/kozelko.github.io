@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membre - Kozel Web</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <header>
+        <h1>Kozel Web</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li class="deroulant"><a href="#">Sections</a>
+                    <ul class="sous">
+                        <li><a href="seconde.html">Seconde SI/NSI</a></li>
+                        <li><a href="premieresi.html">Première option SI</a></li>
+                        <li><a href="terminalsi.html">Terminale option SI</a></li>
+                        <li><a href="bts1.html">BTS CPRP1</a></li>
+                        <li><a href="bts2.html">BTS CPRP2</a></li>
+                    </ul>
+                </li>
+                <li><a href="#lycee">Lycée</a></li>
+                <li><a href="membre.html">Membre</a></li>
+                <li><a href="#contact">Contact</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Page Membre</h2>
+        <p>Veuillez vous identifier pour accéder aux corrigés :</p>
+        <form id="login-form">
+            <label for="username">Identifiant :</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Se connecter</button>
+        </form>
+
+        <div id="protected-content" style="display:none;">
+            <h3>Corrigés</h3>
+            <table id="correctionsTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Nom du Corrigé</th>
+                        <th>Description</th>
+                        <th>Accès</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Corrigé 1</td>
+                        <td>Exercice sur les bases</td>
+                        <td><a href="#">Télécharger</a></td>
+                    </tr>
+                    <tr>
+                        <td>Corrigé 2</td>
+                        <td>Application avancée</td>
+                        <td><a href="#">Télécharger</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="error-message" style="display:none;">
+            <h3>Mot de passe ou identifiant incorrecte</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et mauris vitae nisl aliquet dignissim. Donec convallis, eros non malesuada hendrerit, odio purus feugiat magna, at venenatis enim metus id orci. Proin nec sapien nec magna feugiat tincidunt non a urna. Sed aliquet fermentum nisi, et efficitur arcu tristique non. Vestibulum non varius erat. Sed luctus enim justo, quis tempor justo vehicula et. Nam fermentum dolor non ipsum efficitur, sit amet feugiat neque interdum. Integer vel magna ligula. Nullam rhoncus felis vitae mauris varius, vel ultricies turpis posuere. Mauris volutpat sapien vitae metus dignissim, vel lacinia urna dapibus. Integer tincidunt vel sapien eget posuere. Sed faucibus pharetra justo at facilisis. Donec vitae tincidunt ligula. Nullam at eros vulputate, viverra turpis vitae, scelerisque mauris. Donec ut purus eros.</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Kozel Web. Tous droits réservés.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#correctionsTable').DataTable();
+
+            $('#login-form').on('submit', function(e) {
+                e.preventDefault();
+                const username = $('#username').val();
+                const password = $('#password').val();
+
+                if (username === 'admin' && password === '1234') {
+                    $('#login-form').hide();
+                    $('#error-message').hide();
+                    $('#protected-content').show();
+                } else {
+                    $('#login-form').hide();
+                    $('#protected-content').hide();
+                    $('#error-message').show();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

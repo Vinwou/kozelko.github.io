@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTS CPRP2 - Kozel Web</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <header>
+        <h1>Kozel Web</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li class="deroulant"><a href="#">Sections</a>
+                    <ul class="sous">
+                        <li><a href="seconde.html">Seconde SI/NSI</a></li>
+                        <li><a href="premieresi.html">Première option SI</a></li>
+                        <li><a href="terminalsi.html">Terminale option SI</a></li>
+                        <li><a href="bts1.html">BTS CPRP1</a></li>
+                        <li><a href="bts2.html">BTS CPRP2</a></li>
+                    </ul>
+                </li>
+                <li><a href="#lycee">Lycée</a></li>
+                <li><a href="membre.html">Membre</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>BTS CPRP2</h2>
+        <p>Bienvenue dans la section des cours pour le BTS CPRP2.</p>
+        <table id="coursTable" class="display">
+            <thead>
+                <tr>
+                    <th>Nom du Cours</th>
+                    <th>Description</th>
+                    <th>Accès</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Automatisation industrielle</td>
+                    <td>Programmation et optimisation des systèmes automatisés</td>
+                    <td><a href="#">Télécharger</a></td>
+                </tr>
+                <tr>
+                    <td>Qualité et contrôle</td>
+                    <td>Assurance qualité et gestion des contrôles en production</td>
+                    <td><a href="#">Télécharger</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Kozel Web. Tous droits réservés.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#coursTable').DataTable();
+        });
+    </script>
+</body>
+</html>
