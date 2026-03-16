@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kozel Web - Sciences Industrielles de l'Ingénieur</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+            color: #333;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-container {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo {
+            width: 30px;
+            height: 30px;
+            filter: brightness(0) invert(1);
+        }
+
+        .site-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Search Container */
+        .search-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1a365d;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .documents-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .documents-table th {
+            background: linear-gradient(135deg, #2c5282 0%, #1a365d 100%);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .documents-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .documents-table tr {
+            transition: all 0.3s ease;
+        }
+
+        .documents-table tr:hover {
+            background: #f8fafc;
+            transform: scale(1.01);
+        }
+
+        .type-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .type-cours { background: #38a169; color: white; }
+        .type-td { background: #3182ce; color: white; }
+        .type-synthese { background: #d69e2e; color: white; }
+        .type-dm { background: #805ad5; color: white; }
+        .type-interro { background: #e53e3e; color: white; }
+        .type-info { background: #4a5568; color: white; }
+
+        .class-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .theme-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: #ebf8ff;
+            border: 1px solid #bee3f8;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2c5282;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            left: 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-statement {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #ffd700;
+        }
+
+        .footer-copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .documents-table {
+                font-size: 0.9rem;
+            }
+
+            .documents-table th,
+            .documents-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+
+            <!--<div class="logo-container">
+                <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+                </svg>
+            </div> -->
+
+            <div class="logo-container">
+                <img src="bras.png" alt="Logo" style="width:130px; height:130px; object-fit:contain; border-radius:50%;">
+            </div>
+
+            
+            <h1 class="site-title">Kozel Web</h1>
+           ! SITE WEB EN CONSTRUCTION !
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="https://www.education.gouv.fr/" target="_blank"  >Cours</a> </li>
+            <!--<li><a href="#td">Travaux Dirigés</a></li>-->
+            <!--<li><a href="#dm">Devoirs Maison</a></li>-->
+            <!--<li><a href="#ressources">Ressources</a></li>-->
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Search Container -->
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-box" placeholder="Trouve ton super document...">
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <h1 class="page-title">Documents de Sciences Industrielles</h1>
+        
+        <table class="documents-table">
+            <thead>
+                <tr>
+                    <th>Nom du Document</th>
+                    <th>Type</th>
+                    <th>Classe</th>
+                    <th>Thème</th>
+                    <th>Description</th>
+                    <th>Téléchargement</th>
+                </tr>
+            </thead>
+            <tbody id="documentTableBody">
+                <tr>
+                    <td>Production</td>
+                    <td><span class="type-tag type-cours">Cours</span></td>
+                    <td><span class="class-tag">BTS CPRP1</span></td>
+                    <td><span class="theme-tag">Usinage</span></td>
+                    <td>Cours d'introduction à l'usinage</td>
+                    <td><a href="pdf\Cours_Production.pdf" target="_blank"  class="download-btn">Télécharger</a></td>
+                </tr>
+                <tr>
+                    <td>Cinématique du Solide</td>
+                    <td><span class="type-tag type-cours">Cours</span></td>
+                    <td><span class="class-tag">Première</span></td>
+                    <td><span class="theme-tag">Mécanique</span></td>
+                    <td>Analyse des mouvements sans tenir compte des forces</td>
+                    <td><a href="#" class="download-btn">Télécharger</a></td>
+                </tr>
+                <tr>
+                    <td>Frottement et Lois de Coulomb</td>
+                    <td><span class="type-tag type-td">TD</span></td>
+                    <td><span class="class-tag">Terminale</span></td>
+                    <td><span class="theme-tag">Mécanique</span></td>
+                    <td>Étude des phénomènes de frottement et applications pratiques</td>
+                    <td><a href="#" class="download-btn">Télécharger</a></td>
+                </tr>
+                <tr>
+                    <td>Systèmes Électriques</td>
+                    <td><span class="type-tag type-cours">Cours</span></td>
+                    <td><span class="class-tag">BTS CRSA1</span></td>
+                    <td><span class="theme-tag">Électricité</span></td>
+                    <td>Étude des circuits électriques et composants électroniques</td>
+                    <td><a href="#" class="download-btn">Télécharger</a></td>
+                </tr>
+                <tr>
+                    <td>Automatisme et Logique</td>
+                    <td><span class="type-tag type-cours">Cours</span></td>
+                    <td><span class="class-tag">BTS CRSA2</span></td>
+                    <td><span class="theme-tag">Automatique</span></td>
+                    <td>Logique combinatoire et séquentielle, grafcet</td>
+                    <td><a href="#" class="download-btn">Télécharger</a></td>
+                </tr>
+                <tr>
+                    <td>Projet de Fin d'Année</td>
+                    <td><span class="type-tag type-synthese">Synthèse</span></td>
+                    <td><span class="class-tag">Terminale</span></td>
+                    <td><span class="theme-tag">Projet</span></td>
+                    <td>Conception et réalisation d'un système technique</td>
+                    <td><a href="#" class="download-btn">Télécharger</a></td>
+                </tr>
+                <tr>
+                    <td>Devoir Maison - Transmission de Puissance</td>
+                    <td><span class="type-tag type-dm">DM</span></td>
+                    <td><span class="class-tag">Première</span></td>
+                    <td><span class="theme-tag">Mécanique</span></td>
+                    <td>Étude d'une transmission par courroie et poulies</td>
+                    <td><a href="#" class="download-btn">Télécharger</a></td>
+                </tr>
+                <tr>
+                    <td>Interrogation - Capteurs</td>
+                    <td><span class="type-tag type-interro">Interro</span></td>
+                    <td><span class="class-tag">BTS CPRP1</span></td>
+                    <td><span class="theme-tag">Automatique</span></td>
+                    <td>Test sur les capteurs et leurs applications</td>
+                    <td><a href="#" class="download-btn">Télécharger</a></td>
+                </tr>
+                <tr>
+                    <td>Information Début d'Année</td>
+                    <td><span class="type-tag type-info">Infos</span></td>
+                    <td><span class="class-tag">Seconde</span></td>
+                    <td><span class="theme-tag">Général</span></td>
+                    <td>Programme et modalités de l'enseignement</td>
+                    <td><a href="#" class="download-btn">Télécharger</a></td>
+                </tr>
+                <tr>
+                    <td>Calcul de Rentabilité</td>
+                    <td><span class="type-tag type-cours">Cours</span></td>
+                    <td><span class="class-tag">BTS CPRP2</span></td>
+                    <td><span class="theme-tag">Économie</span></td>
+                    <td>Méthodes de calcul de seuil de rentabilité</td>
+                    <td><a href="#" class="download-btn">Télécharger</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-statement">Sciences de l'Ingénieur</div>
+            <div class="footer-copyright">© 2026 Kozel Web. Tous droits réservés.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Fonction de recherche
+        function searchDocuments() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById('documentTableBody');
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+                
+                for (let j = 0; j < cells.length - 1; j++) { // On ignore la dernière cellule (téléchargement)
+                    if (cells[j].textContent.toLowerCase().includes(filter)) {
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if (found) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+
+        // Écouteur d'événements pour la barre de recherche
+        document.getElementById('searchInput').addEventListener('keyup', searchDocuments);
+    </script>
+</body>
+</html>
