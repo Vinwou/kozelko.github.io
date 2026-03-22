@@ -50,12 +50,6 @@
             overflow: hidden;
         }
 
-        .logo {
-            width: 30px;
-            height: 30px;
-            filter: brightness(0) invert(1);
-        }
-
         .site-title {
             font-size: 1.8rem;
             font-weight: bold;
@@ -65,23 +59,68 @@
             background-clip: text;
         }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
+        /* ── Navigation ── */
+        nav ul { list-style: none; display: flex; align-items: center; gap: 4px; }
+        nav > ul > li { position: relative; }
 
         nav a {
-            color: white;
+            display: block;
             text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            transition: all 0.3s ease;
+            color: rgba(255,255,255,.85);
+            font-size: .9rem;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all .25s ease;
+            white-space: nowrap;
+        }
+        nav > ul > li > a:hover,
+        nav > ul > li:hover > a {
+            color: #ffffff;
+            background: rgba(255,255,255,.15);
         }
 
-        nav a:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
+        .deroulant > a::after { content: " ▾"; font-size: 11px; opacity: .7; }
+
+        .sous {
+            display: none;
+            position: absolute;
+            top: calc(100% + 0px);
+            left: 0;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 12px 48px rgba(15,29,58,.20);
+            min-width: 220px;
+            overflow: hidden;
+            border: 1px solid #dde3f0;
+            animation: dropIn .2s ease;
+            z-index: 9999;
+        }
+        @keyframes dropIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        nav ul li:hover .sous { display: block; }
+
+        .sous li a {
+            color: #1a2540 !important;
+            padding: 11px 18px;
+            font-size: .875rem;
+            border-radius: 0;
+            border-left: 3px solid transparent;
+            background: none;
+        }
+        .sous li a:hover {
+            background: #f0f4fb !important;
+            border-left-color: #3a7bd5;
+            color: #1a3a6b !important;
+        }
+        /* Highlight active menu item */
+        .sous li a.nav-active {
+            background: #eef3fb !important;
+            border-left-color: #f6a800;
+            color: #1a3a6b !important;
+            font-weight: 600;
         }
 
         /* Search Container */
@@ -235,168 +274,861 @@
             opacity: 0.8;
         }
 
-        /* Responsive Design */
+        /* ═══════════════════════════════════════════════════
+           VUE FICHE BTS CRSA
+        ═══════════════════════════════════════════════════ */
+
+        #vue-principale { display: block; }
+        #vue-crsa       { display: none; }
+
+        /* Breadcrumb retour */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+        .breadcrumb a {
+            color: #2c5282;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb-sep { color: #a0aec0; }
+
+        /* ── Fiche styles (dark theme) ── */
+        #vue-crsa {
+            font-family: 'IBM Plex Mono', 'Consolas', monospace;
+        }
+
+        .fiche-wrap {
+            background: #0d1117;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+        }
+
+        .fiche-header {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 20px 24px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .fiche-header-title h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 16px;
+            font-weight: 600;
+            color: #e6edf3;
+        }
+        .fiche-header-title p {
+            color: #8b949e;
+            font-size: 12px;
+            margin-top: 3px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .fiche-header-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .fiche-meta-chip {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid #30363d;
+            color: #8b949e;
+            background: #1c2128;
+        }
+
+        /* Legend */
+        .fiche-legend {
+            background: #1c2128;
+            border-bottom: 1px solid #30363d;
+            padding: 10px 24px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .fiche-legend-label {
+            font-size: 11px;
+            color: #6e7681;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .fiche-lvl-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #8b949e;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .fiche-lvl-dot {
+            width: 18px; height: 18px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .flvl1 { background: #1f3a5f; color: #79c0ff; border: 1px solid #1f6feb; }
+        .flvl2 { background: #1a3a1a; color: #7ee787; border: 1px solid #2ea043; }
+        .flvl3 { background: #3a2d0a; color: #f0c84a; border: 1px solid #9e6a03; }
+        .flvl4 { background: #3d1212; color: #ff9ea0; border: 1px solid #b62324; }
+
+        /* Tabs */
+        .fiche-tabs-nav {
+            display: flex;
+            border-bottom: 1px solid #30363d;
+            background: #161b22;
+            padding: 0 24px;
+            overflow-x: auto;
+        }
+        .fiche-tab-btn {
+            padding: 10px 18px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Segoe UI', sans-serif;
+            color: #8b949e;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            white-space: nowrap;
+            transition: color .15s;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-weight: 400;
+        }
+        .fiche-tab-btn:hover { color: #e6edf3; }
+        .fiche-tab-btn.ftab-meca { color: #79c0ff; border-bottom-color: #388bfd; }
+        .fiche-tab-btn.ftab-elec { color: #7ee787; border-bottom-color: #3fb950; }
+        .fiche-tab-btn.ftab-info { color: #f0c84a; border-bottom-color: #e3b341; }
+
+        .fiche-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .fdot-meca { background: #388bfd; }
+        .fdot-elec { background: #3fb950; }
+        .fdot-info { background: #e3b341; }
+
+        /* Panels */
+        .fiche-panels { padding: 20px 24px 32px; }
+        .fiche-panel { display: none; }
+        .fiche-panel.factive { display: block; }
+
+        /* Section header inside fiche */
+        .fiche-sec-hdr {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #30363d;
+        }
+        .fiche-sec-icon {
+            width: 28px; height: 28px;
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; flex-shrink: 0;
+        }
+        .fsicon-meca { background: #0c2d6b; border: 1px solid #388bfd; }
+        .fsicon-elec { background: #0a3d1a; border: 1px solid #3fb950; }
+        .fsicon-info { background: #3a2d0a; border: 1px solid #e3b341; }
+        .fiche-sec-hdr h3 { font-size: 14px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; }
+        .fsh-meca { color: #79c0ff; }
+        .fsh-elec { color: #7ee787; }
+        .fsh-info { color: #f0c84a; }
+
+        /* Table inside fiche */
+        .ftable {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-bottom: 28px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .ftable thead tr {
+            background: #1c2128;
+            border: 1px solid #30363d;
+        }
+        .ftable th {
+            padding: 8px 12px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            font-weight: 500;
+            color: #6e7681;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            white-space: nowrap;
+            border-right: 1px solid #30363d;
+        }
+        .ftable th:last-child { border-right: none; }
+        .ftable tbody tr {
+            border-left: 1px solid #30363d;
+            border-right: 1px solid #30363d;
+            border-bottom: 1px solid #30363d;
+            transition: background .1s;
+        }
+        .ftable tbody tr:hover { background: #1c2128; }
+        .ftable td {
+            padding: 9px 12px;
+            vertical-align: top;
+            border-right: 1px solid #30363d;
+            color: #e6edf3;
+        }
+        .ftable td:last-child { border-right: none; }
+
+        .frow-detail td {
+            background: #1c2128;
+            font-weight: 600;
+            font-size: 12px;
+            color: #e6edf3;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        .frow-detail td:first-child { border-left: 3px solid transparent; }
+        .frow-detail.fmeca td:first-child { border-left-color: #388bfd; }
+        .frow-detail.felec td:first-child { border-left-color: #3fb950; }
+        .frow-detail.finfo td:first-child { border-left-color: #e3b341; }
+
+        .frow-sub td:first-child { padding-left: 24px; color: #8b949e; }
+
+        .fsavoir-tag {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            font-weight: 500;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: #1f2d45;
+            color: #79c0ff;
+            border: 1px solid #1f6feb;
+            white-space: nowrap;
+        }
+        .fuf-tag {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: #1c2128;
+            color: #8b949e;
+            border: 1px solid #30363d;
+            white-space: nowrap;
+        }
+        .fuc-tag {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: #2d1f45;
+            color: #d2a8ff;
+            border: 1px solid #6e40c9;
+            white-space: nowrap;
+        }
+
+        .ftax { text-align: center; vertical-align: middle; }
+
+        .fcap-list { color: #8b949e; line-height: 1.8; }
+        .fcap-list li { list-style: none; padding-left: 10px; position: relative; }
+        .fcap-list li::before { content: '›'; position: absolute; left: 0; color: #6e7681; }
+
+        .fnote-row td {
+            background: #1a1a10;
+            color: #6e7681;
+            font-style: italic;
+            font-size: 11px;
+            border-top: 1px dashed #3a3a20;
+        }
+
+        .ftag-row { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1rem;
-            }
-
-            nav ul {
-                gap: 1rem;
-            }
-
-            .page-title {
-                font-size: 1.8rem;
-            }
-
-            .documents-table {
-                font-size: 0.9rem;
-            }
-
-            .documents-table th,
-            .documents-table td {
-                padding: 0.5rem;
-            }
+            header { flex-direction: column; gap: 1rem; padding: 1rem; }
+            nav ul { gap: 1rem; }
+            .page-title { font-size: 1.8rem; }
+            .documents-table { font-size: 0.9rem; }
+            .documents-table th, .documents-table td { padding: 0.5rem; }
+            .ftable { font-size: 11px; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- ══════════ HEADER ══════════ -->
     <header>
         <div class="header-left">
-
-            <!--<div class="logo-container">
-                <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
-                </svg>
-            </div> -->
-
             <div class="logo-container">
                 <img src="bras.png" alt="Logo" style="width:130px; height:130px; object-fit:contain; border-radius:50%;">
             </div>
-
-            
             <h1 class="site-title">Kozel Web</h1>
-           ! SITE WEB EN CONSTRUCTION !
+            ! SITE WEB EN CONSTRUCTION !
         </div>
-        <nav>
-            <ul>
-                <li><a href="#accueil">Accueil</a></li>
-                <li><a href="https://www.education.gouv.fr/" target="_blank"  >Cours</a> </li>
-            <!--<li><a href="#td">Travaux Dirigés</a></li>-->
-            <!--<li><a href="#dm">Devoirs Maison</a></li>-->
-            <!--<li><a href="#ressources">Ressources</a></li>-->
+        <nav style="margin-left:auto; margin-right:100px;">
+            <ul style="display:flex; align-items:center; gap:8px; list-style:none;">
+                <li><a href="#" onclick="afficherVue('principale'); return false;">Accueil</a></li>
+                <li class="deroulant"><a href="#">Programmes de S2I</a>
+                    <ul class="sous">
+                        <li><a href="#" onclick="filtrerClasse('Seconde'); afficherVue('principale'); return false;">Seconde SI/NSI</a></li>
+                        <li><a href="#" onclick="filtrerClasse('Première'); afficherVue('principale'); return false;">BAC spé SI</a></li>
+                        <li><a href="#" onclick="filtrerClasse('BTS CPRP1'); afficherVue('principale'); return false;">BTS CPRP</a></li>
+                        <li><a href="#" id="nav-crsa" onclick="afficherVue('crsa'); return false;">BTS CRSA</a></li>
+                    </ul>
+                </li>
+                <li class="deroulant"><a href="#">Sections</a>
+                    <ul class="sous">
+                        <li><a href="#" onclick="filtrerClasse('Seconde'); afficherVue('principale'); return false;">Seconde SI/NSI</a></li>
+                        <li><a href="#" onclick="filtrerClasse('Première'); afficherVue('principale'); return false;">Première option SI</a></li>
+                        <li><a href="#" onclick="filtrerClasse('Terminale'); afficherVue('principale'); return false;">Terminale option SI</a></li>
+                        <li><a href="#" onclick="filtrerClasse('BTS CPRP1'); afficherVue('principale'); return false;">BTS CPRP1</a></li>
+                        <li><a href="#" onclick="filtrerClasse('BTS CPRP2'); afficherVue('principale'); return false;">BTS CPRP2</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
 
-    <!-- Search Container -->
-    <div class="search-container">
-        <input type="text" id="searchInput" class="search-box" placeholder="Trouve ton super document...">
+    <!-- ══════════ VUE PRINCIPALE ══════════ -->
+    <div id="vue-principale">
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-box" placeholder="Trouve ton super document...">
+        </div>
+        <main>
+            <h1 class="page-title">Documents de Sciences Industrielles</h1>
+            <div style="display:flex; justify-content:flex-end; margin-bottom:1rem;">
+                <button onclick="filtrerClasse('')" style="
+                    display: inline-flex; align-items: center; gap: 6px;
+                    padding: 8px 18px; background: transparent; color: #2c5282;
+                    border: 2px solid #2c5282; border-radius: 8px;
+                    font-family: 'Segoe UI', sans-serif; font-size: 0.9rem;
+                    font-weight: 600; cursor: pointer; transition: all 0.3s ease;"
+                    onmouseover="this.style.background='#2c5282'; this.style.color='white';"
+                    onmouseout="this.style.background='transparent'; this.style.color='#2c5282';">
+                    🔄 Réinitialiser
+                </button>
+            </div>
+            <table class="documents-table">
+                <thead>
+                    <tr>
+                        <th>Nom du Document</th>
+                        <th>Type</th>
+                        <th>Classe</th>
+                        <th>Thème</th>
+                        <th>Description</th>
+                        <th>Téléchargement</th>
+                    </tr>
+                </thead>
+                <tbody id="documentTableBody">
+                    <tr>
+                        <td>Production</td>
+                        <td><span class="type-tag type-cours">Cours</span></td>
+                        <td><span class="class-tag">BTS CPRP1</span></td>
+                        <td><span class="theme-tag">Usinage</span></td>
+                        <td>Cours d'introduction à l'usinage</td>
+                        <td><a href="pdf\Cours_Production.pdf" target="_blank" class="download-btn">Télécharger</a></td>
+                    </tr>
+                    <tr>
+                        <td>Cinématique du Solide</td>
+                        <td><span class="type-tag type-cours">Cours</span></td>
+                        <td><span class="class-tag">Première</span></td>
+                        <td><span class="theme-tag">Mécanique</span></td>
+                        <td>Analyse des mouvements sans tenir compte des forces</td>
+                        <td><a href="#" class="download-btn">Télécharger</a></td>
+                    </tr>
+                    <tr>
+                        <td>Frottement et Lois de Coulomb</td>
+                        <td><span class="type-tag type-td">TD</span></td>
+                        <td><span class="class-tag">Terminale</span></td>
+                        <td><span class="theme-tag">Mécanique</span></td>
+                        <td>Étude des phénomènes de frottement et applications pratiques</td>
+                        <td><a href="#" class="download-btn">Télécharger</a></td>
+                    </tr>
+                    <tr>
+                        <td>Systèmes Électriques</td>
+                        <td><span class="type-tag type-cours">Cours</span></td>
+                        <td><span class="class-tag">BTS CRSA1</span></td>
+                        <td><span class="theme-tag">Électricité</span></td>
+                        <td>Étude des circuits électriques et composants électroniques</td>
+                        <td><a href="#" class="download-btn">Télécharger</a></td>
+                    </tr>
+                    <tr>
+                        <td>Automatisme et Logique</td>
+                        <td><span class="type-tag type-cours">Cours</span></td>
+                        <td><span class="class-tag">BTS CRSA2</span></td>
+                        <td><span class="theme-tag">Automatique</span></td>
+                        <td>Logique combinatoire et séquentielle, grafcet</td>
+                        <td><a href="#" class="download-btn">Télécharger</a></td>
+                    </tr>
+                    <tr>
+                        <td>Projet de Fin d'Année</td>
+                        <td><span class="type-tag type-synthese">Synthèse</span></td>
+                        <td><span class="class-tag">Terminale</span></td>
+                        <td><span class="theme-tag">Projet</span></td>
+                        <td>Conception et réalisation d'un système technique</td>
+                        <td><a href="#" class="download-btn">Télécharger</a></td>
+                    </tr>
+                    <tr>
+                        <td>Devoir Maison - Transmission de Puissance</td>
+                        <td><span class="type-tag type-dm">DM</span></td>
+                        <td><span class="class-tag">Première</span></td>
+                        <td><span class="theme-tag">Mécanique</span></td>
+                        <td>Étude d'une transmission par courroie et poulies</td>
+                        <td><a href="#" class="download-btn">Télécharger</a></td>
+                    </tr>
+                    <tr>
+                        <td>Interrogation - Capteurs</td>
+                        <td><span class="type-tag type-interro">Interro</span></td>
+                        <td><span class="class-tag">BTS CPRP1</span></td>
+                        <td><span class="theme-tag">Automatique</span></td>
+                        <td>Test sur les capteurs et leurs applications</td>
+                        <td><a href="#" class="download-btn">Télécharger</a></td>
+                    </tr>
+                    <tr>
+                        <td>Information Début d'Année</td>
+                        <td><span class="type-tag type-info">Infos</span></td>
+                        <td><span class="class-tag">Seconde</span></td>
+                        <td><span class="theme-tag">Général</span></td>
+                        <td>Programme et modalités de l'enseignement</td>
+                        <td><a href="#" class="download-btn">Télécharger</a></td>
+                    </tr>
+                    <tr>
+                        <td>Calcul de Rentabilité</td>
+                        <td><span class="type-tag type-cours">Cours</span></td>
+                        <td><span class="class-tag">BTS CPRP2</span></td>
+                        <td><span class="theme-tag">Économie</span></td>
+                        <td>Méthodes de calcul de seuil de rentabilité</td>
+                        <td><a href="#" class="download-btn">Télécharger</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
     </div>
 
-    <!-- Main Content -->
-    <main>
-        <h1 class="page-title">Documents de Sciences Industrielles</h1>
-        
-        <table class="documents-table">
-            <thead>
-                <tr>
-                    <th>Nom du Document</th>
-                    <th>Type</th>
-                    <th>Classe</th>
-                    <th>Thème</th>
-                    <th>Description</th>
-                    <th>Téléchargement</th>
-                </tr>
-            </thead>
-            <tbody id="documentTableBody">
-                <tr>
-                    <td>Production</td>
-                    <td><span class="type-tag type-cours">Cours</span></td>
-                    <td><span class="class-tag">BTS CPRP1</span></td>
-                    <td><span class="theme-tag">Usinage</span></td>
-                    <td>Cours d'introduction à l'usinage</td>
-                    <td><a href="pdf\Cours_Production.pdf" target="_blank"  class="download-btn">Télécharger</a></td>
-                </tr>
-                <tr>
-                    <td>Cinématique du Solide</td>
-                    <td><span class="type-tag type-cours">Cours</span></td>
-                    <td><span class="class-tag">Première</span></td>
-                    <td><span class="theme-tag">Mécanique</span></td>
-                    <td>Analyse des mouvements sans tenir compte des forces</td>
-                    <td><a href="#" class="download-btn">Télécharger</a></td>
-                </tr>
-                <tr>
-                    <td>Frottement et Lois de Coulomb</td>
-                    <td><span class="type-tag type-td">TD</span></td>
-                    <td><span class="class-tag">Terminale</span></td>
-                    <td><span class="theme-tag">Mécanique</span></td>
-                    <td>Étude des phénomènes de frottement et applications pratiques</td>
-                    <td><a href="#" class="download-btn">Télécharger</a></td>
-                </tr>
-                <tr>
-                    <td>Systèmes Électriques</td>
-                    <td><span class="type-tag type-cours">Cours</span></td>
-                    <td><span class="class-tag">BTS CRSA1</span></td>
-                    <td><span class="theme-tag">Électricité</span></td>
-                    <td>Étude des circuits électriques et composants électroniques</td>
-                    <td><a href="#" class="download-btn">Télécharger</a></td>
-                </tr>
-                <tr>
-                    <td>Automatisme et Logique</td>
-                    <td><span class="type-tag type-cours">Cours</span></td>
-                    <td><span class="class-tag">BTS CRSA2</span></td>
-                    <td><span class="theme-tag">Automatique</span></td>
-                    <td>Logique combinatoire et séquentielle, grafcet</td>
-                    <td><a href="#" class="download-btn">Télécharger</a></td>
-                </tr>
-                <tr>
-                    <td>Projet de Fin d'Année</td>
-                    <td><span class="type-tag type-synthese">Synthèse</span></td>
-                    <td><span class="class-tag">Terminale</span></td>
-                    <td><span class="theme-tag">Projet</span></td>
-                    <td>Conception et réalisation d'un système technique</td>
-                    <td><a href="#" class="download-btn">Télécharger</a></td>
-                </tr>
-                <tr>
-                    <td>Devoir Maison - Transmission de Puissance</td>
-                    <td><span class="type-tag type-dm">DM</span></td>
-                    <td><span class="class-tag">Première</span></td>
-                    <td><span class="theme-tag">Mécanique</span></td>
-                    <td>Étude d'une transmission par courroie et poulies</td>
-                    <td><a href="#" class="download-btn">Télécharger</a></td>
-                </tr>
-                <tr>
-                    <td>Interrogation - Capteurs</td>
-                    <td><span class="type-tag type-interro">Interro</span></td>
-                    <td><span class="class-tag">BTS CPRP1</span></td>
-                    <td><span class="theme-tag">Automatique</span></td>
-                    <td>Test sur les capteurs et leurs applications</td>
-                    <td><a href="#" class="download-btn">Télécharger</a></td>
-                </tr>
-                <tr>
-                    <td>Information Début d'Année</td>
-                    <td><span class="type-tag type-info">Infos</span></td>
-                    <td><span class="class-tag">Seconde</span></td>
-                    <td><span class="theme-tag">Général</span></td>
-                    <td>Programme et modalités de l'enseignement</td>
-                    <td><a href="#" class="download-btn">Télécharger</a></td>
-                </tr>
-                <tr>
-                    <td>Calcul de Rentabilité</td>
-                    <td><span class="type-tag type-cours">Cours</span></td>
-                    <td><span class="class-tag">BTS CPRP2</span></td>
-                    <td><span class="theme-tag">Économie</span></td>
-                    <td>Méthodes de calcul de seuil de rentabilité</td>
-                    <td><a href="#" class="download-btn">Télécharger</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </main>
+    <!-- ══════════ VUE FICHE BTS CRSA ══════════ -->
+    <div id="vue-crsa">
+        <main>
+            <!-- Fil d'Ariane -->
+            <div class="breadcrumb">
+                <a href="#" onclick="afficherVue('principale'); return false;">🏠 Accueil</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>Programmes de S2I</span>
+                <span class="breadcrumb-sep">›</span>
+                <strong style="color:#1a365d;">Référentiel BTS CRSA</strong>
+            </div>
+
+            <!-- Fiche complète -->
+            <div class="fiche-wrap">
+
+                <!-- En-tête fiche -->
+                <div class="fiche-header">
+                    <div class="fiche-header-title">
+                        <h2>📋 Fiche de synthèse — BTS CRSA</h2>
+                        <p>Référentiel d'enseignement · Arrêté du 10 octobre 2011 · Mécanique · Électrique · Informatique</p>
+                        <div class="fiche-header-meta">
+                            <span class="fiche-meta-chip">BTS Conception et Réalisation de Systèmes Automatiques</span>
+                            <span class="fiche-meta-chip">70 pages analysées</span>
+                            <span class="fiche-meta-chip">UC32 · UF3.2 · UF5 · S8 · S9</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Légende niveaux taxonomiques -->
+                <div class="fiche-legend">
+                    <span class="fiche-legend-label">Niveaux taxon. :</span>
+                    <span class="fiche-lvl-badge"><span class="fiche-lvl-dot flvl1">1</span> Connaissance (citer, définir)</span>
+                    <span class="fiche-lvl-badge"><span class="fiche-lvl-dot flvl2">2</span> Compréhension (appliquer, exploiter, calculer)</span>
+                    <span class="fiche-lvl-badge"><span class="fiche-lvl-dot flvl3">3</span> Application (dimensionner, choisir, justifier)</span>
+                    <span class="fiche-lvl-badge"><span class="fiche-lvl-dot flvl4">4</span> Maîtrise (concevoir, optimiser)</span>
+                </div>
+
+                <!-- Onglets fiche -->
+                <div class="fiche-tabs-nav">
+                    <button class="fiche-tab-btn ftab-meca" id="ftab-meca" onclick="ficheTab('meca',this)"><span class="fiche-dot fdot-meca"></span>⚙ Mécanique</button>
+                    <button class="fiche-tab-btn" id="ftab-elec" onclick="ficheTab('elec',this)"><span class="fiche-dot fdot-elec"></span>⚡ Électrique</button>
+                    <button class="fiche-tab-btn" id="ftab-info" onclick="ficheTab('info',this)"><span class="fiche-dot fdot-info"></span>💻 Informatique / Programmation</button>
+                </div>
+
+                <div class="fiche-panels">
+
+                    <!-- ═══ MÉCANIQUE ═══ -->
+                    <div id="fpanel-meca" class="fiche-panel factive">
+                        <div class="fiche-sec-hdr">
+                            <div class="fiche-sec-icon fsicon-meca">⚙</div>
+                            <h3 class="fsh-meca">Mécanique</h3>
+                        </div>
+                        <table class="ftable">
+                            <thead><tr>
+                                <th style="width:18%">Thème / Sous-thème</th>
+                                <th style="width:7%">Savoir</th>
+                                <th style="width:5%">Niv.</th>
+                                <th style="width:20%">Unité de formation</th>
+                                <th>Notions &amp; Capacités exigibles</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr class="frow-detail fmeca"><td colspan="5">STATIQUE</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Modélisation des liaisons</td>
+                                    <td><span class="fsavoir-tag">S8.7</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M1.1</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Schéma cinématique, schéma technologique</li><li>Modélisation des liaisons (pivot, glissière, rotule…)</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Principe fondamental de la statique</td>
+                                    <td><span class="fsavoir-tag">S8.7</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M1.1</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Définition de la frontière d'une étude</li><li>Modélisation des actions mécaniques</li><li>Application du PFS</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail fmeca"><td colspan="5">CINÉMATIQUE</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Cinématique du point / solide</td>
+                                    <td><span class="fsavoir-tag">S8.7</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M1.1</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Cinématique du point d'un solide</li><li>Cinématique du solide (translation, rotation)</li><li>Chaînes cinématiques</li></ul></td>
+                                </tr>
+                                <tr class="fnote-row"><td colspan="5">⚠ Torseur &amp; changement de base : absents du référentiel (niveau IUT/prépa, pas BTS)</td></tr>
+
+                                <tr class="frow-detail fmeca"><td colspan="5">DYNAMIQUE</td></tr>
+                                <tr class="frow-sub">
+                                    <td>PFD – translation</td>
+                                    <td><span class="fsavoir-tag">S8.7</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M1.2</span><span class="fuf-tag">UF3.2-M3</span><span class="fuc-tag">UC51/UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Appliquer le PFD à un solide en translation</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>PFD – rotation axe fixe</td>
+                                    <td><span class="fsavoir-tag">S8.7</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M1.2</span><span class="fuf-tag">UF3.2-M3</span><span class="fuc-tag">UC51/UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Appliquer le PFD à un solide en rotation autour d'un axe fixe</li><li>Moment d'inertie donné</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail fmeca"><td colspan="5">CINÉTIQUE &amp; ÉNERGIE MÉCANIQUE</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Théorème énergie cinétique</td>
+                                    <td><span class="fsavoir-tag">S8.7</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M1.2</span><span class="fuf-tag">UF3.2-M3</span><span class="fuc-tag">UC51/UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Appliquer le théorème de l'énergie cinétique</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Conservation énergie mécanique</td>
+                                    <td><span class="fsavoir-tag">S8.7</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M3</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Appliquer le théorème de conservation de l'énergie mécanique</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail fmeca"><td colspan="5">TRANSMISSION DE PUISSANCE</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Éléments de guidage</td>
+                                    <td><span class="fsavoir-tag">S8.5</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M1.1</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Constituants et composants de guidage industriels</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Transformation de mouvement</td>
+                                    <td><span class="fsavoir-tag">S8.5</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M1.1</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Constituants de transformation de mouvement (vis-écrou, bielle-manivelle…)</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Éléments de transmission</td>
+                                    <td><span class="fsavoir-tag">S8.5</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M1.1</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Poulies, courroies, engrenages, réducteurs</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail fmeca"><td colspan="5">MÉCANIQUE DES FLUIDES (Fluidique)</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Hydrostatique / Débit</td>
+                                    <td><span class="fsavoir-tag">S8.7</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M3</span><span class="fuf-tag">UF5-M1.1</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Pression comme force surfacique</li><li>PF de l'hydrostatique : différence de pression, hauteur de fluide</li><li>Débit massique et volumique, équation de continuité</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Bernoulli / Pertes de charge</td>
+                                    <td><span class="fsavoir-tag">S8.7</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M3</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Équation de Bernoulli (fluide parfait, régime permanent)</li><li>Viscosité, nombre de Reynolds, régimes laminaire/turbulent</li><li>Types de pertes de charge, calcul en régime laminaire</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail fmeca"><td colspan="5">STRUCTURES MÉCANIQUES</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Structures porteuses &amp; matériaux</td>
+                                    <td><span class="fsavoir-tag">S8.6</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M1.2</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Structures porteuses, conception modulaire</li><li>Caractéristiques des matériaux</li><li>Paramètres de dimensionnement d'une motorisation d'axe</li></ul></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ═══ ÉLECTRIQUE ═══ -->
+                    <div id="fpanel-elec" class="fiche-panel">
+                        <div class="fiche-sec-hdr">
+                            <div class="fiche-sec-icon fsicon-elec">⚡</div>
+                            <h3 class="fsh-elec">Électrique — Étude des machines &amp; Convertisseurs</h3>
+                        </div>
+                        <table class="ftable">
+                            <thead><tr>
+                                <th style="width:18%">Thème / Sous-thème</th>
+                                <th style="width:7%">Savoir</th>
+                                <th style="width:5%">Niv.</th>
+                                <th style="width:20%">Unité de formation</th>
+                                <th>Notions &amp; Capacités exigibles</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr class="frow-detail felec"><td colspan="5">DISTRIBUTION DE L'ÉNERGIE ÉLECTRIQUE (Triphasé)</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Tensions &amp; courants triphasés</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M2.2</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Caractériser une distribution triphasée : phase, neutre, tensions simples/composées</li><li>Couplages étoile et triangle, conventions courants/tensions</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Facteur de puissance (cos φ)</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl3">3</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M2.2</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Calculer puissances active, réactive, apparente</li><li>Calculer cos φ d'une installation triphasée équilibrée</li><li>Mesurer la puissance active (avec/sans neutre)</li><li>Dimensionner un dispositif de compensation</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail felec"><td colspan="5">TRANSFORMATEUR</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Transformateur monophasé</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M2.1</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Décrire la conversion de puissance (AC/AC)</li><li>Relations grandeurs primaire / secondaire</li><li>Mesurer le rapport de transformation</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail felec"><td colspan="5">REDRESSEUR (AC → DC) — Pont diodes / Pont mixte / Pont thyristor</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Pont de diodes</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M2.1</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Identifier le convertisseur depuis schéma ou chronogramme</li><li>Exploiter l'oscillogramme de tension de sortie</li><li>Influence d'une bobine sur l'ondulation de courant</li><li>Relever les harmoniques</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Pont mixte &amp; pont thyristor</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M2.1</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Identifier : pont de diodes, pont mixte, pont tout thyristor</li><li>Exploiter l'oscillogramme : déterminer le retard à l'amorçage</li><li>Relation expérimentale vitesse moteur / retard amorçage</li></ul></td>
+                                </tr>
+                                <tr class="fnote-row"><td colspan="5">⚠ Les appellations PD2 / PD3 ne figurent pas telles quelles — le document emploie "pont de diodes", "pont mixte", "pont tout thyristor".</td></tr>
+
+                                <tr class="frow-detail felec"><td colspan="5">HACHEUR (DC → DC)</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Hacheur série</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M2.1</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Décrire la conversion DC/DC, relations entrée/sortie</li><li>Exploiter chronogrammes : rapport cyclique, ondulation de courant</li><li>Influence d'une bobine de lissage, harmoniques</li><li>Relation expérimentale vitesse moteur / rapport cyclique</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail felec"><td colspan="5">ONDULEUR (DC → AC)</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Onduleur (MLI)</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M2.2</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Décrire la conversion DC→AC, sens de transfert d'énergie</li><li>Chronogrammes, harmoniques en sortie</li><li>Relation commande (symétrique, décalée, MLI) / spectre fréquentiel</li><li>Fonctionnement à U/f constant</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail felec"><td colspan="5">MACHINE À COURANT CONTINU (MCC)</td></tr>
+                                <tr class="frow-sub">
+                                    <td>MCC — modèle &amp; caractéristiques</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M2.1</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Modèle électrique équivalent de l'induit (régime permanent)</li><li>Bilan des puissances et rendement</li><li>Caractéristique mécanique T = f(Ω)</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail felec"><td colspan="5">MACHINES ALTERNATIVES — Synchrone (MS) &amp; Asynchrone (MAS)</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Machine synchrone (MS)</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M2.2</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Justifier le terme "synchrone" (vitesse liée à la fréquence réseau)</li><li>Couplage de l'induit sur un réseau, bilan puissances, rendement</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Machine asynchrone (MAS)</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M2.2</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Justifier le terme "asynchrone" (glissement)</li><li>Point de fonctionnement depuis caractéristiques</li><li>T = f(Ω) pour différentes fréquences d'alimentation (U/f constant)</li></ul></td>
+                                </tr>
+                                <tr class="fnote-row"><td colspan="5">⚠ Les acronymes MAS / MS ne sont pas écrits tels quels — le document parle de "machines alternatives, synchrone et asynchrone".</td></tr>
+
+                                <tr class="frow-detail felec"><td colspan="5">ÉNERGIE — BILAN &amp; CONVERTISSEURS (vue générale)</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Chaîne d'énergie &amp; rendement</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M1</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Relation puissance / énergie, principe de conservation</li><li>Représenter la chaîne d'énergie, calculer rendement et efficacité</li><li>Choisir le type de convertisseur adapté à une motorisation</li></ul></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ═══ INFORMATIQUE ═══ -->
+                    <div id="fpanel-info" class="fiche-panel">
+                        <div class="fiche-sec-hdr">
+                            <div class="fiche-sec-icon fsicon-info">💻</div>
+                            <h3 class="fsh-info">Informatique &amp; Programmation / Automatisme</h3>
+                        </div>
+                        <table class="ftable">
+                            <thead><tr>
+                                <th style="width:18%">Thème / Sous-thème</th>
+                                <th style="width:7%">Savoir</th>
+                                <th style="width:5%">Niv.</th>
+                                <th style="width:20%">Unité de formation</th>
+                                <th>Notions &amp; Capacités exigibles</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr class="frow-detail finfo"><td colspan="5">MAQUETTE NUMÉRIQUE &amp; MODÉLISATION</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Modeleur volumique 3D</td>
+                                    <td><span class="fsavoir-tag">S8.9</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl3">3</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M2</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Paramétrage, arbre de construction, contraintes d'assemblage</li><li>Méthodes : assemblage, pièce, surfaces fonctionnelles, mode plan/schémas</li><li>Bibliothèques et banques de données techniques (local / accès distant)</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Mise en plan &amp; exploitation</td>
+                                    <td><span class="fsavoir-tag">S8.10</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl3">3</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M2</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Coupes, cotation normalisée, nomenclatures</li><li>Éclatés, rendus réalistes, animations</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail finfo"><td colspan="5">SIMULATION COMPORTEMENTALE</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Simulation automate (programme)</td>
+                                    <td><span class="fsavoir-tag">S8.12</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl3">3</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M3.1</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Simulation d'un programme automate avec/sans système virtuel</li><li>Simulation ergonomie postes de travail</li><li>Influence des données et paramètres, analyse des écarts</li><li>Ordonnancement : flux discrets, continus, hybrides</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Simulation méca / élec / pneum.</td>
+                                    <td><span class="fsavoir-tag">S8.12</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl3">3</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M3.2</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Simulation des comportements mécaniques, électriques, pneumatiques</li><li>Modélisation et simulation de flux</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail finfo"><td colspan="5">LOGICIELS DE CONTRÔLE-COMMANDE</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Programmation automate (API)</td>
+                                    <td><span class="fsavoir-tag">S8.11</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl3">3</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M3.1</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Logiciels de programmation des contrôleurs d'automatisme programmable</li><li>Atelier logiciel intégré : programmation API, contrôleurs, commande moteurs</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Supervision &amp; IHM</td>
+                                    <td><span class="fsavoir-tag">S8.11</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl3">3</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M3.2</span><span class="fuc-tag">UC51</span></div></td>
+                                    <td><ul class="fcap-list"><li>Logiciels de programmation IHM, supervision, diagnostic à distance</li><li>Interfaçage contrôle-commande / systèmes informatiques (ex : OPC)</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail finfo"><td colspan="5">LOGICIELS CAO — SCHÉMAS ÉLECTRIQUES &amp; AUTOMATISMES</td></tr>
+                                <tr class="frow-sub">
+                                    <td>CAO schémas électriques</td>
+                                    <td><span class="fsavoir-tag">S9.6</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M5.1</span><span class="fuf-tag">UF5-M5.2</span><span class="fuc-tag">UC52</span></div></td>
+                                    <td><ul class="fcap-list"><li>Règles de conception des armoires de commande</li><li>Logiciels de schématisation (SEE Electrical, Eplan…)</li><li>Représentations graphiques normalisées (élec., pneum., hydraul.)</li><li>Câblage : réseau, transfo, alimentation, E/S API, partie puissance</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail finfo"><td colspan="5">ALGORITHMIQUE — GRAFCET — LANGAGES DE DESCRIPTION</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Outils de description logique</td>
+                                    <td><span class="fsavoir-tag">S9.7</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl3">3</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M6.1</span><span class="fuc-tag">UC52</span></div></td>
+                                    <td><ul class="fcap-list"><li>Nature des données : logique, analogique, numérique, alphanumérique</li><li>Équations logiques, logigrammes, chronogrammes</li><li>GRAFCET : concepts, règles, structures, actions, réceptivités</li><li>Blocs fonctionnels standard, GEMMA, arbres de décision</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Algorithmes &amp; langages</td>
+                                    <td><span class="fsavoir-tag">S9.7</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl3">3</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M6.2</span><span class="fuc-tag">UC52</span></div></td>
+                                    <td><ul class="fcap-list"><li>Modélisation des données, décomposition fonctionnelle</li><li>Procédures et algorithmes appliqués aux blocs fonctionnels</li><li>Représentations littérales structurées, langages IEC 61131-3 (ST, IL, FBD, LD)</li><li>GRAFCET avancé : synchronisation, coopération, macro-représentations</li></ul></td>
+                                </tr>
+                                <tr class="fnote-row"><td colspan="5">⚠ Python et HTML absents du référentiel BTS CRSA (2011). Les langages traités sont les langages automates IEC 61131-3 (GRAFCET, ST, IL, FBD, LD).</td></tr>
+
+                                <tr class="frow-detail finfo"><td colspan="5">RÉSEAUX INDUSTRIELS &amp; COMMUNICATION</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Réseaux industriels</td>
+                                    <td><span class="fsavoir-tag">S9.3</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M5.2</span><span class="fuc-tag">UC52</span></div></td>
+                                    <td><ul class="fcap-list"><li>Réseaux industriels Ethernet et réseaux de terrain</li><li>Médias de communication, topologies, modes de transmission</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>Matériels programmables</td>
+                                    <td><span class="fsavoir-tag">S9.2</span></td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF5-M5.1</span><span class="fuf-tag">UF5-M5.2</span><span class="fuc-tag">UC52</span></div></td>
+                                    <td><ul class="fcap-list"><li>Automates programmables (API), modules programmables</li><li>Contrôleurs dédiés, PC industriels, commande numérique</li></ul></td>
+                                </tr>
+
+                                <tr class="frow-detail finfo"><td colspan="5">TRAITEMENT DU SIGNAL &amp; CAPTEURS (lien info. embarquée)</td></tr>
+                                <tr class="frow-sub">
+                                    <td>Analyse du signal</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M5.2</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Propriétés temporelles : valeur moyenne, chronogramme, valeur efficace</li><li>Propriétés fréquentielles : harmoniques, spectre d'amplitude</li><li>Traitement : diviseur de tension, pont de Wheatstone, comparateur, amplificateur, filtrage</li></ul></td>
+                                </tr>
+                                <tr class="frow-sub">
+                                    <td>CNA / CAN (conversion numérique)</td>
+                                    <td>—</td>
+                                    <td class="ftax"><span class="fiche-lvl-dot flvl2">2</span></td>
+                                    <td><div class="ftag-row"><span class="fuf-tag">UF3.2-M5.2</span><span class="fuc-tag">UC32</span></div></td>
+                                    <td><ul class="fcap-list"><li>Exploiter la caractéristique CNA (numérique → analogique)</li><li>Exploiter la caractéristique CAN (analogique → numérique)</li><li>Principe de transmission numérique</li></ul></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div><!-- /fiche-panels -->
+            </div><!-- /fiche-wrap -->
+        </main>
+    </div><!-- /vue-crsa -->
 
     <!-- Footer -->
     <footer>
@@ -407,34 +1139,44 @@
     </footer>
 
     <script>
-        // Fonction de recherche
+        /* ── Recherche tableau principal ── */
         function searchDocuments() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toLowerCase();
-            const table = document.getElementById('documentTableBody');
-            const rows = table.getElementsByTagName('tr');
-
+            const filter = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.getElementById('documentTableBody').getElementsByTagName('tr');
             for (let i = 0; i < rows.length; i++) {
                 const cells = rows[i].getElementsByTagName('td');
                 let found = false;
-                
-                for (let j = 0; j < cells.length - 1; j++) { // On ignore la dernière cellule (téléchargement)
-                    if (cells[j].textContent.toLowerCase().includes(filter)) {
-                        found = true;
-                        break;
-                    }
+                for (let j = 0; j < cells.length - 1; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(filter)) { found = true; break; }
                 }
-                
-                if (found) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
+                rows[i].style.display = found ? '' : 'none';
             }
         }
-
-        // Écouteur d'événements pour la barre de recherche
         document.getElementById('searchInput').addEventListener('keyup', searchDocuments);
+
+        function filtrerClasse(mot) {
+            const input = document.getElementById('searchInput');
+            input.value = mot;
+            searchDocuments();
+            input.scrollIntoView();
+        }
+
+        /* ── Bascule entre les deux vues ── */
+        function afficherVue(vue) {
+            document.getElementById('vue-principale').style.display = vue === 'principale' ? 'block' : 'none';
+            document.getElementById('vue-crsa').style.display       = vue === 'crsa'        ? 'block' : 'none';
+            // Highlight du lien actif dans le menu
+            document.getElementById('nav-crsa').classList.toggle('nav-active', vue === 'crsa');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ── Onglets internes de la fiche ── */
+        function ficheTab(id, btn) {
+            document.querySelectorAll('.fiche-panel').forEach(p => p.classList.remove('factive'));
+            document.querySelectorAll('.fiche-tab-btn').forEach(t => t.classList.remove('ftab-meca','ftab-elec','ftab-info'));
+            document.getElementById('fpanel-' + id).classList.add('factive');
+            btn.classList.add('ftab-' + id);
+        }
     </script>
 </body>
 </html>
