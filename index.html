@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kozel Web – Sciences industrielles de l'ingénieur</title>
+<meta name="description" content="Cours, TD et fiches de synthèse de sciences industrielles de l'ingénieur, de la seconde au BTS.">
+<meta name="theme-color" content="#16283A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%2316283A'/%3E%3Cpath d='M9 8v16M9 16l9-8M9 16l9 8' fill='none' stroke='white' stroke-width='3' stroke-linecap='square'/%3E%3Cpath d='M23 8v16' stroke='%23C43D22' stroke-width='2' stroke-dasharray='5 2 1 2'/%3E%3C/svg%3E">
+
+<!-- Polices Google : facultatif. Supprimez ces 3 lignes pour un site 100 % hors ligne,
+     des polices système très proches prendront le relais. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Pixelify+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap">
+
+<!--
+  KOZEL WEB : un seul fichier, aucun JavaScript.
+
+  COMMENT ÇA MARCHE
+  Chaque page du site est un bloc <section id="...">. Un lien href="#id" affiche le bloc
+  correspondant (technique CSS « :target »). La page d'accueil est placée EN DERNIER dans
+  le code : c'est ce qui permet de l'afficher par défaut. Ne la déplacez pas.
+
+  AJOUTER UN DOCUMENT
+  Copiez un bloc <li class="doc"> ... </li> dans la bonne page, puis modifiez :
+    - href (chemin du PDF, avec des / et non des \)
+    - la classe du repère : tag--cours, tag--td, tag--fiche ou tag--info
+    - le titre, la description et le thème
+  Document pas encore prêt : remplacez le lien <a> par un <div> et le bouton par
+  <span class="dl dl--off">Bientôt</span> (voir « Information début d'année »).
+
+
+  MASQUER / RÉAFFICHER UNE RUBRIQUE (exemple : STI2D)
+  ----------------------------------------------------
+  La classe CSS « masque-temporairement » cache un élément sans supprimer son HTML.
+  Elle est définie plus bas dans la feuille de style avec display:none !important.
+
+  Dans cette version, STI2D est masqué à TROIS endroits :
+    1. Dans le menu principal : le <li> portant les classes g-sti2d et
+       masque-temporairement.
+    2. Dans le contenu : la <section id="sti2d"> qui contient Première et Terminale.
+    3. Dans le sommaire de l'accueil : le <div> qui présente le lien STI2D.
+
+  POUR RÉAFFICHER STI2D :
+    - Dans le menu, recherchez : class="g-sti2d masque-temporairement"
+      et retirez uniquement « masque-temporairement ». Gardez « g-sti2d ».
+    - Pour la page, recherchez : class="page masque-temporairement" id="sti2d"
+      et remplacez par : class="page" id="sti2d".
+    - Dans le sommaire de l'accueil, recherchez le commentaire qui commence par
+      « Pour réafficher STI2D dans l'accueil », puis remplacez
+      <div class="masque-temporairement"> par <div>.
+
+  Après ces trois modifications, STI2D réapparaît dans le menu, sur l'accueil et
+  dans le contenu. Les deux années et les cours ajoutés entre-temps sont conservés.
+  Ne supprimez ni la section STI2D ni son identifiant id="sti2d".
+
+  POUR MASQUER À NOUVEAU : remettez simplement la classe
+  « masque-temporairement » sur les trois éléments indiqués.
+
+-->
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   ZONE DE PERSONNALISATION DU SITE
+   Les réglages les plus utiles sont regroupés ici.
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  /* COULEURS ----------------------------------------------------- */
+  --papier:#EDF2F5;          /* FOND PRINCIPAL de la page (autour de la feuille blanche).
+                               C'est cette valeur qu'il faut modifier pour changer
+                               la couleur de fond générale du site. */
+  --feuille:#FFFFFF;         /* Fond des zones de contenu (feuilles blanches). */
+  --encre:#2a4561;           /* Texte principal et traits forts. */
+  --trace:#2B5F8E;           /* Liens et éléments interactifs. */
+  --gris:#556676;            /* Texte secondaire. */
+  --filet:#C9D6DF;           /* Traits et séparateurs fins. */
+  --axe:#C43D22;             /* Accent rouge : page active et alertes. */
+  --quad:#D3E0E8;            /* Quadrillage principal du bandeau. */
+  --quad-fin:#E4EDF2;        /* Quadrillage millimétré fin du bandeau. */
+
+  /* POLICES ------------------------------------------------------ */
+  /* Police générale des titres, menus et boutons.
+     POLICE D'ORIGINE : Barlow Semi Condensed.
+     Pour tester une police différente, remplacez uniquement le nom placé
+     au début de la liste. Exemple : "Pixelify Sans" pour un rendu pixel art.
+     Les polices suivantes servent de solutions de secours. */
+  --titre:"Barlow Semi Condensed","Arial Narrow","Roboto Condensed","Helvetica Neue",Arial,sans-serif;
+
+  /* Police générale des paragraphes.
+     POLICE D'ORIGINE : Source Serif 4. */
+  --texte:"Source Serif 4","Iowan Old Style","Palatino Linotype",Georgia,serif;
+
+  /* Police réservée au bandeau supérieur : « Kozel Web » et son sous-titre.
+     Par défaut, elle reprend la police d'origine des titres (Barlow Semi Condensed).
+     Pour un style pixel art, utilisez par exemple :
+     --police-bandeau:"Pixelify Sans","Barlow Semi Condensed",Arial,sans-serif; */
+  --police-bandeau:var(--titre);
+
+  /* Police réservée au cartouche inférieur (Titre, Statut, Niveaux, etc.).
+     Par défaut : Barlow Semi Condensed.
+     Vous pouvez également mettre "Pixelify Sans" en première position. */
+  --police-cartouche:var(--titre);
+
+  /* IMAGE OU MOTIF DU BANDEAU SUPERIEUR -------------------------- */
+  /* Par défaut, le bandeau conserve le papier millimétré.
+
+     POUR METTRE UNE PHOTO A LA PLACE :
+     1. Placez votre image dans un dossier à côté de ce fichier HTML,
+        par exemple : images/fond.jpg.
+     2. Remplacez les valeurs des paramètres concernés par cet exemple :
+
+        --bandeau-fond:url("images/fond.jpg");
+        --bandeau-fond-size:cover;
+        --bandeau-fond-position:center;
+        --bandeau-fond-repeat:no-repeat;
+        --bandeau-voile:rgba(255,255,255,.55);
+
+        « cover » adapte l'image à toute la largeur/hauteur du bandeau ;
+        « center » centre l'image ; « no-repeat » évite sa répétition.
+        Le voile blanc à 55 % est facultatif : diminuez sa valeur ou mettez
+        « transparent » si vous souhaitez voir davantage la photo.
+
+     Exemples de fichiers : .jpg, .jpeg, .png ou .webp.
+     Le chemin est relatif à l'emplacement de ce fichier HTML. */
+  --bandeau-fond:
+    linear-gradient(var(--quad) 1px,transparent 1px),
+    linear-gradient(90deg,var(--quad) 1px,transparent 1px),
+    linear-gradient(var(--quad-fin) 1px,transparent 1px),
+    linear-gradient(90deg,var(--quad-fin) 1px,transparent 1px);
+  --bandeau-fond-size:50px 50px,50px 50px,10px 10px,10px 10px;
+  --bandeau-fond-position:top left,top left,top left,top left;
+  --bandeau-fond-repeat:repeat;
+
+  /* Voile placé au-dessus du fond pour améliorer la lisibilité du texte.
+     Papier millimétré : transparent.
+     Photo très contrastée ou sombre : essayez rgba(255,255,255,.65). */
+  --bandeau-voile:transparent;
+  --bandeau-couleur:#F7FAFB;  /* Couleur de secours du bandeau. */
+}
+
+/* ── Masquage temporaire de rubriques ────────────────────────────
+   Ajoutez la classe « masque-temporairement » à un élément HTML pour le cacher.
+   display:none masque l'élément et ne réserve aucun espace dans la page.
+   !important garantit que la rubrique reste cachée même si son adresse (#sti2d)
+   est saisie directement dans le navigateur.
+
+   Pour réafficher STI2D, retirez cette classe des trois éléments STI2D :
+   entrée du menu, section de contenu et bloc de l'index de l'accueil.
+   Le contenu HTML est conservé : ne supprimez pas les éléments concernés.
+   ─────────────────────────────────────────────────────────────── */
+.masque-temporairement{
+  display:none !important;
+}
+
+/* ── Base ──────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100vh;display:flex;flex-direction:column;
+  background:var(--papier);color:var(--encre);
+  font:400 1.0625rem/1.65 var(--texte);
+}
+h1,h2,h3,p,ul{margin:0}
+ul{padding:0;list-style:none}
+a{color:var(--trace);text-underline-offset:.18em}
+a:focus-visible{outline:3px solid var(--trace);outline-offset:3px}
+
+/* ── Bandeau : fond personnalisable (quadrillage ou photo) ─────── */
+.banner{
+  background-color:var(--bandeau-couleur);
+  /* Première couche : voile de lisibilité. Deuxième couche : photo ou quadrillage. */
+  background-image:
+    linear-gradient(var(--bandeau-voile),var(--bandeau-voile)),
+    var(--bandeau-fond);
+  background-size:auto,var(--bandeau-fond-size);
+  background-position:center,var(--bandeau-fond-position);
+  background-repeat:no-repeat,var(--bandeau-fond-repeat);
+  border-bottom:1px solid var(--filet);
+}
+.banner__inner{
+  max-width:68rem;margin:0 auto;padding:2rem 1.25rem;
+  display:flex;align-items:center;justify-content:space-between;gap:2rem;
+}
+.banner h1{font:700 clamp(2.5rem,6vw,3.75rem)/1 var(--police-bandeau);letter-spacing:.01em}
+.banner h1 a{color:var(--encre);text-decoration:none}
+.banner__sub{font:500 clamp(1.15rem,2.6vw,1.45rem)/1.25 var(--police-bandeau);color:var(--trace);margin-top:.6rem}
+.banner__draw{flex:0 1 26rem;width:26rem;max-width:50%;height:auto}
+.banner__draw text{font:600 11px/1 var(--titre);fill:var(--encre)}
+
+/* ── Navigation (menus déroulants en CSS pur) ──────────────────── */
+.nav{background:var(--encre);position:sticky;top:0;z-index:50}
+.nav__list{
+  max-width:68rem;margin:0 auto;padding:0 1.25rem;
+  display:flex;flex-wrap:wrap;gap:.25rem;
+}
+.nav__list>li{position:relative}
+.nav a{
+  display:block;text-decoration:none;color:#DCE6EE;
+  font:600 1.08rem/1 var(--titre);letter-spacing:.02em;
+  padding:1.05rem .95rem;border-bottom:3px solid transparent;
+}
+.nav a:focus-visible{outline:3px solid #fff;outline-offset:-3px}
+.nav__list>li>a:hover,
+.nav__list>li:focus-within>a{background:rgba(255,255,255,.09);color:#fff}
+
+/* petit chevron sur les entrées qui ont un sous-menu */
+.has-sub>a::after{
+  content:"";display:inline-block;width:.4em;height:.4em;margin-left:.5em;
+  border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+  transform:translateY(-.18em) rotate(45deg);
+}
+
+.sub{
+  display:none;position:absolute;left:0;top:100%;min-width:13.5rem;padding:.35rem 0;
+  background:var(--feuille);border:1px solid var(--filet);border-top:3px solid var(--axe);
+  box-shadow:0 12px 28px rgba(22,40,58,.2);
+}
+.has-sub:hover>.sub,
+.has-sub:focus-within>.sub{display:block}
+.sub a{
+  color:var(--encre);font:500 1.05rem/1.2 var(--titre);
+  padding:.7rem 1.15rem;border-bottom:0;border-left:3px solid transparent;
+}
+.sub a:hover,.sub a:focus-visible{background:#EEF3F7;border-left-color:var(--trace);color:var(--trace)}
+.sub a:focus-visible{outline-color:var(--trace);outline-offset:-3px}
+
+/* Page courante soulignée en rouge (navigateurs récents, sans effet sinon) */
+body:not(:has(.page:target)) .nav a[href="#accueil"],
+body:has(#seconde:target,#seconde-nsi:target,#seconde-si:target) .g-seconde>a,
+body:has(#specialite:target) .g-specialite>a,
+body:has(#sti2d:target) .g-sti2d>a,
+body:has(#bts:target,#bts-cprp:target,#bts-crsa:target) .g-bts>a{
+  color:#fff;border-bottom-color:var(--axe);
+}
+
+/* ── Feuille de contenu ────────────────────────────────────────── */
+.wrap{flex:1;width:100%;max-width:68rem;margin:0 auto;padding:2rem 1.25rem 2.5rem}
+.sheet{
+  background:var(--feuille);border:1px solid var(--filet);
+  padding:clamp(1.25rem,4vw,3rem);min-height:24rem;
+}
+.sheet h2{font:700 clamp(2.1rem,4.5vw,2.85rem)/1.1 var(--titre)}
+.sheet h3{font:600 1.4rem/1.2 var(--titre)}
+.sheet p{max-width:42rem}
+
+/* Une page = une section. Seule celle ciblée par le lien s'affiche. */
+.page{display:none}
+.page:target{display:block}
+.home{display:block}
+.page:target~.home{display:none}
+/* Le clic sur un lien remonte toujours en haut de la page, bandeau visible */
+.page,.home{scroll-margin-top:100vh}
+
+.crumb{font:500 .95rem/1.2 var(--titre);color:var(--gris);margin-bottom:1.25rem}
+.crumb a{color:var(--gris)}
+.lead{font-size:1.15rem;line-height:1.6;color:var(--gris);margin-top:.9rem}
+
+/* Titre de grande partie : année (trait long et marqué) */
+.sheet .year{
+  margin-top:2.5rem;
+  padding-bottom:.45rem;
+  border-bottom:2px solid var(--encre);
+}
+
+/* SOUS-TITRE : séquence, chapitre ou groupe de documents dans une année.
+   Exemple HTML : <h4 class="subsection">Séquence 7</h4>
+   Le trait est volontairement plus court et plus fin que celui de .year.
+   Pour modifier sa longueur, changez la valeur width (actuellement 4.5rem).
+   Pour modifier son apparence, changez border-bottom et/ou la couleur. */
+.sheet .subsection{
+  position:relative;
+  margin-top:1.7rem;
+  margin-bottom:.55rem;
+  padding-bottom:.45rem;
+  font:600 1.2rem/1.2 var(--titre);
+  color:var(--trace);
+}
+.sheet .subsection::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:4.5rem;             /* LONGUEUR du petit trait sous le sous-titre */
+  border-bottom:1.5px solid var(--trace);
+}
+
+/* ── Choix d'une classe (pages « niveau ») ─────────────────────── */
+.picks{margin-top:2rem;border-top:2px solid var(--encre)}
+.picks li{border-bottom:1px solid var(--filet)}
+.picks a{display:block;padding:1.1rem .25rem;color:inherit;text-decoration:none}
+.picks a:hover{background:#F3F7FA}
+.pick__name{display:block;font:700 1.65rem/1.15 var(--titre);color:var(--trace)}
+.picks a:hover .pick__name{text-decoration:underline;text-underline-offset:.15em}
+.pick__desc{display:block;margin-top:.2rem;font-size:1rem;line-height:1.5;color:var(--gris)}
+
+/* ── Liste de documents ────────────────────────────────────────── */
+.docs li{border-bottom:1px solid var(--filet)}
+.doc__row{
+  display:grid;grid-template-columns:5rem 1fr auto;
+  grid-template-areas:"tag body dl";
+  gap:1rem;align-items:center;padding:1rem .25rem;
+  color:inherit;text-decoration:none;
+}
+a.doc__row:hover{background:#F3F7FA}
+a.doc__row:focus-visible{outline:3px solid var(--trace);outline-offset:-3px}
+.doc__body{grid-area:body;display:block}
+.doc__title{display:block;font:600 1.25rem/1.25 var(--titre)}
+a.doc__row:hover .doc__title{color:var(--trace);text-decoration:underline;text-underline-offset:.18em}
+.doc__desc{display:block;margin-top:.15rem;font-size:1rem;line-height:1.5}
+.doc__theme{display:block;margin-top:.2rem;font-size:.9rem;line-height:1.4;color:var(--gris)}
+
+/* Repère de type : plein, plein clair, contour ou tirets, en plus de la couleur */
+.tag{
+  grid-area:tag;justify-self:start;
+  font:600 .88rem/1 var(--titre);letter-spacing:.03em;
+  padding:.4rem .65rem;border:1.5px solid var(--encre);border-radius:2px;color:var(--encre);
+}
+.tag--cours{background:var(--encre);color:#fff}
+.tag--td{background:var(--trace);border-color:var(--trace);color:#fff}
+.tag--fiche{background:transparent}
+.tag--info{border-color:var(--gris);border-style:dashed;color:var(--gris)}
+
+.dl{
+  grid-area:dl;display:inline-flex;align-items:center;gap:.5rem;white-space:nowrap;
+  font:600 .98rem/1 var(--titre);letter-spacing:.02em;
+  padding:.65rem .95rem;border:1.5px solid var(--trace);border-radius:2px;color:var(--trace);
+  transition:background-color .15s,color .15s;
+}
+.dl::before{
+  content:"";width:1.05em;height:1.05em;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12M7 10l5 5 5-5M4 20h16'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12M7 10l5 5 5-5M4 20h16'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+a.doc__row:hover .dl{background:var(--trace);color:#fff}
+.dl--off{border-style:dashed;border-color:var(--gris);color:var(--gris)}
+.dl--off::before{display:none}
+
+.empty{margin-top:2rem;padding:1.5rem;border:1.5px dashed var(--filet);color:var(--gris)}
+
+/* ── Accueil ───────────────────────────────────────────────────── */
+.hello{font-size:1.25rem;line-height:1.5;margin-top:1.25rem}
+.home p+p{margin-top:1rem}
+.notice{
+  margin-top:1.75rem;padding:.9rem 1.1rem;max-width:42rem;
+  border-left:4px solid var(--axe);background:#FBF1EE;
+}
+.index-title{margin-top:2.75rem}
+.index{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));
+  gap:1.5rem;margin-top:1rem;
+}
+.index>div{border-top:2px solid var(--encre);padding-top:.6rem}
+.sheet .index h4{font:700 1.4rem/1.2 var(--titre)}
+.index h4 a{color:var(--encre);text-decoration:none}
+.index h4 a:hover{color:var(--trace);text-decoration:underline}
+.index li a{display:block;padding:.3rem 0}
+
+/* ── Pied de page en forme de cartouche de dessin technique ────── */
+.cartouche{width:100%;max-width:68rem;margin:0 auto;padding:0 1.25rem 2.5rem}
+.cartouche__grid{
+  margin-left:auto;width:min(100%,40rem);
+  display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:1px;
+  background:var(--encre);border:2px solid var(--encre);
+}
+.cartouche__cell{background:var(--feuille);padding:.55rem .85rem}
+.cartouche__cell--wide{grid-column:span 2}
+.cartouche small{display:block;font:500 .8rem/1.2 var(--police-cartouche);color:var(--gris)}
+.cartouche strong{display:block;font:600 1.05rem/1.3 var(--police-cartouche)}
+
+/* ── Écrans étroits et tactiles ────────────────────────────────── */
+/* Pas de menu déroulant : le menu principal mène à une page « niveau »
+   qui propose les classes. */
+@media (max-width:760px),(hover:none){
+  .sub{display:none!important}
+  .has-sub>a::after{display:none}
+}
+@media (max-width:760px){
+  .banner__draw{display:none}
+  .banner__inner{padding:1.5rem 1.25rem}
+  .nav__list{padding:0 .5rem;gap:0}
+  .nav a{padding:.9rem .65rem;font-size:1.02rem}
+}
+@media (max-width:560px){
+  .doc__row{
+    grid-template-columns:1fr auto;
+    grid-template-areas:"tag dl" "body body";
+    gap:.6rem 1rem;
+  }
+  .cartouche__grid{grid-template-columns:1fr 1fr}
+  .cartouche__cell--wide{grid-column:span 2}
+}
+@media (prefers-reduced-motion:reduce){
+  .dl{transition:none}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ══════════ BANDEAU ══════════ -->
+<header class="banner">
+  <div class="banner__inner">
+    <div>
+      <h1><a href="#accueil">Kozel Web</a></h1>
+      <p class="banner__sub">Sciences industrielles de l'ingénieur</p>
+    </div>
+
+    
+  </div>
+</header>
+
+<!-- ══════════ NAVIGATION ══════════ -->
+<nav class="nav" aria-label="Navigation principale">
+  <ul class="nav__list">
+    <li><a href="#accueil">Accueil</a></li>
+
+    <li class="has-sub g-seconde"><a href="#seconde">Seconde</a>
+      <ul class="sub">
+        <li><a href="#seconde-nsi">NSI</a></li>
+        <li><a href="#seconde-si">SI</a></li>
+      </ul>
+    </li>
+
+    <li class="g-specialite"><a href="#specialite">Spécialité SI</a></li>
+
+    <!--
+      STI2D est temporairement masqué dans le menu.
+      Pour le réafficher : retirez uniquement « masque-temporairement » ci-dessous.
+      Conservez « g-sti2d », qui sert à la mise en forme de la navigation.
+    -->
+    <li class="g-sti2d masque-temporairement"><a href="#sti2d">STI2D</a></li>
+
+    <li class="has-sub g-bts"><a href="#bts">BTS</a>
+      <ul class="sub">
+        <li><a href="#bts-cprp">CPRP</a></li>
+        <li><a href="#bts-crsa">CRSA</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<!-- ══════════ PAGES ══════════ -->
+<div class="wrap">
+<main class="sheet">
+
+
+<!-- ───────── SECONDE ───────── -->
+<section class="page" id="seconde">
+  <nav class="crumb" aria-label="Fil d'Ariane"><a href="#accueil">Accueil</a> / Seconde</nav>
+  <h2>Seconde</h2>
+  <p class="lead">Choisissez votre enseignement.</p>
+
+  <ul class="picks">
+    <li><a href="#seconde-nsi"><span class="pick__name">NSI</span><span class="pick__desc">Cours, TD et fiches de seconde NSI.</span></a></li>
+    <li><a href="#seconde-si"><span class="pick__name">SI</span><span class="pick__desc">Cours, TD et fiches de seconde SI.</span></a></li>
+  </ul>
+
+  <h3 class="year">Informations générales</h3>
+  <ul class="docs">
+    <li class="doc">
+      <div class="doc__row">
+        <span class="tag tag--info">Infos</span>
+        <span class="doc__body">
+          <span class="doc__title">Information début d'année</span>
+          <span class="doc__desc">Programme et modalités de l'enseignement.</span>
+          <span class="doc__theme">Thème : Général</span>
+        </span>
+        <span class="dl dl--off">Bientôt</span>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<section class="page" id="seconde-nsi">
+  <nav class="crumb" aria-label="Fil d'Ariane"><a href="#accueil">Accueil</a> / <a href="#seconde">Seconde</a> / NSI</nav>
+  <h2>Seconde NSI</h2>
+  <p class="empty">Aucun document pour l'instant. Les cours, TD et fiches de cette classe seront ajoutés ici au fil de l'année.</p>
+</section>
+
+<section class="page" id="seconde-si">
+  <nav class="crumb" aria-label="Fil d'Ariane"><a href="#accueil">Accueil</a> / <a href="#seconde">Seconde</a> / SI</nav>
+  <h2>Seconde SI</h2>
+  <p class="empty">Aucun document pour l'instant. Les cours, TD et fiches de cette classe seront ajoutés ici au fil de l'année.</p>
+</section>
+
+
+<!-- ───────── SPÉCIALITÉ SI ───────── -->
+<section class="page" id="specialite">
+  <nav class="crumb" aria-label="Fil d'Ariane"><a href="#accueil">Accueil</a> / Spécialité SI</nav>
+  <h2>Spécialité SI</h2>
+  <p class="lead">Enseignement de spécialité : première année (Première) et deuxième année (Terminale).</p>
+
+  <h3 class="year">1re année</h3>
+  <ul class="docs">
+    <li class="doc">
+      <a class="doc__row" href="pdf/SI1_Effort_flux_synthese.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--fiche">Fiche</span>
+        <span class="doc__body">
+          <span class="doc__title">Effort et flux</span>
+          <span class="doc__desc">Notions d'effort et de flux pour le calcul de puissance dans les chaînes fonctionnelles.</span>
+          <span class="doc__theme">Thème : Énergie</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+    <li class="doc">
+      <a class="doc__row" href="pdf/SI1_SysmL_synthese.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--fiche">Fiche</span>
+        <span class="doc__body">
+          <span class="doc__title">Langage SysML</span>
+          <span class="doc__desc">Représentation d'un système avec l'outil SysML.</span>
+          <span class="doc__theme">Thème : Modélisation</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+  </ul>
+
+  <h3 class="year">2e année</h3>
+  <ul class="docs">
+    <li class="doc">
+      <a class="doc__row" href="pdf/FS_Statique_Frottement.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--fiche">Fiche</span>
+        <span class="doc__body">
+          <span class="doc__title">Statique avec frottement</span>
+          <span class="doc__desc">Étude statique (PFS) en prenant en compte les frottements.</span>
+          <span class="doc__theme">Thème : Mécanique</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+  </ul>
+</section>
+
+
+<!--
+  STI2D : le contenu est conservé mais temporairement masqué.
+  Pour réafficher cette page, remplacez class="page masque-temporairement"
+  par class="page". Conservez impérativement id="sti2d".
+-->
+<section class="page masque-temporairement" id="sti2d">
+  <nav class="crumb" aria-label="Fil d'Ariane"><a href="#accueil">Accueil</a> / STI2D</nav>
+  <h2>STI2D</h2>
+  <p class="lead">Sciences et technologies de l'industrie et du développement durable.</p>
+
+  <!-- Les documents de Première STI2D seront ajoutés sous ce titre. -->
+  <h3 class="year">1re année — Première STI2D</h3>
+  <p class="empty">Aucun document pour l'instant. Les cours, TD et fiches de première STI2D seront ajoutés ici au fil de l'année.</p>
+
+  <!-- Les documents de Terminale STI2D seront ajoutés sous ce titre. -->
+  <h3 class="year">2e année — Terminale STI2D</h3>
+  <p class="empty">Aucun document pour l'instant. Les cours, TD et fiches de terminale STI2D seront ajoutés ici au fil de l'année.</p>
+</section>
+
+
+<!-- ───────── BTS ───────── -->
+<section class="page" id="bts">
+  <nav class="crumb" aria-label="Fil d'Ariane"><a href="#accueil">Accueil</a> / BTS</nav>
+  <h2>BTS</h2>
+  <p class="lead">Choisissez votre section.</p>
+
+  <ul class="picks">
+    <li><a href="#bts-cprp"><span class="pick__name">CPRP</span><span class="pick__desc">Conception des processus de réalisation de produits. Cours, TD et fiches de 1re et 2e années.</span></a></li>
+    <li><a href="#bts-crsa"><span class="pick__name">CRSA</span><span class="pick__desc">Conception et réalisation de systèmes automatiques. Cours, TD et fiches de 1re et 2e années.</span></a></li>
+  </ul>
+</section>
+
+<section class="page" id="bts-cprp">
+  <nav class="crumb" aria-label="Fil d'Ariane"><a href="#accueil">Accueil</a> / <a href="#bts">BTS</a> / CPRP</nav>
+  <h2>BTS CPRP</h2>
+  <p class="lead">Conception des processus de réalisation de produits.</p>
+
+  <h3 class="year">1re année</h3>
+  <ul class="docs">
+    <li class="doc">
+      <a class="doc__row" href="pdf/Cours_Production.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--cours">Cours</span>
+        <span class="doc__body">
+          <span class="doc__title">Production</span>
+          <span class="doc__desc">Cours d'introduction à l'usinage.</span>
+          <span class="doc__theme">Thème : Production</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+    <li class="doc">
+      <a class="doc__row" href="pdf/Sequence_1_Communiquer.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--cours">Cours</span>
+        <span class="doc__body">
+          <span class="doc__title">Communication industrielle</span>
+          <span class="doc__desc">Séquence 1 : principe de communication normée pour la production.</span>
+          <span class="doc__theme">Thème : Communication</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+    <li class="doc">
+      <a class="doc__row" href="pdf/Sequence_2_Representer.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--cours">Cours</span>
+        <span class="doc__body">
+          <span class="doc__title">Représentation d'un système</span>
+          <span class="doc__desc">Modélisation des actions mécaniques d'un système.</span>
+          <span class="doc__theme">Thème : Mécanique</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+    <li class="doc">
+      <a class="doc__row" href="pdf/Tuto_FAO.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--td">TD</span>
+        <span class="doc__body">
+          <span class="doc__title">Tuto FAO</span>
+          <span class="doc__desc">Cours et TD pour la FAO sur CATIA V5. Document non complet.</span>
+          <span class="doc__theme">Thème : CAO</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+  </ul>
+
+  <h3 class="year">2e année</h3>
+  <ul class="docs">
+    <li class="doc">
+      <a class="doc__row" href="pdf/Parametre_coupe_synthese.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--fiche">Fiche</span>
+        <span class="doc__body">
+          <span class="doc__title">Paramètres de coupe</span>
+          <span class="doc__desc">Fiche méthode pour le calcul de certains paramètres de coupe (POV examen).</span>
+          <span class="doc__theme">Thème : Usinage</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+    <li class="doc">
+      <a class="doc__row" href="pdf/Seuil_rentabilite_synthese.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--fiche">Fiche</span>
+        <span class="doc__body">
+          <span class="doc__title">Seuil de rentabilité</span>
+          <span class="doc__desc">Méthodes de détermination analytique et graphique du seuil de rentabilité.</span>
+          <span class="doc__theme">Thème : Coût</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+  </ul>
+</section>
+
+<section class="page" id="bts-crsa">
+  <nav class="crumb" aria-label="Fil d'Ariane"><a href="#accueil">Accueil</a> / <a href="#bts">BTS</a> / CRSA</nav>
+  <h2>BTS CRSA</h2>
+  <p class="lead">Conception et réalisation de systèmes automatiques.</p>
+
+  <h3 class="year">1re année</h3>
+  <p class="empty">Pas de document pour l'instant.</p>
+
+  <h3 class="year">2e année</h3>
+
+  <!-- Sous-titre court : tous les documents placés juste après appartiennent à la séquence 7. -->
+  <h4 class="subsection">Séquence 7</h4>
+  <ul class="docs">
+    <li class="doc">
+      <a class="doc__row" href="pdf/BTS__CRSA_cours_7-1.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--cours">Cours</span>
+        <span class="doc__body">
+          <span class="doc__title">Séquence 7 :Du global au local</span>
+          <span class="doc__desc">Cours 7.1 : rappel de la première année, chaînes fonctionnelles, modélisation.</span>
+          <span class="doc__theme">Thème : Mécanique</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+    <li class="doc">
+      <a class="doc__row" href="pdf/BTS_CRSA_TD_7-1.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--td">TD</span>
+        <span class="doc__body">
+          <span class="doc__title">Séquence 7 :Du global au local</span>
+          <span class="doc__desc">TD 7.1 : rappel de la première année, chaînes fonctionnelles, modélisation.</span>
+          <span class="doc__theme">Thème : Mécanique</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Même classe réutilisable pour la séquence 8, puis les suivantes. -->
+  <h4 class="subsection">Séquence 8</h4>
+  <ul class="docs">
+    <li class="doc">
+      <a class="doc__row" href="pdf/BTS_CRSA_TD_8-3.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--td">TD</span>
+        <span class="doc__body">
+          <span class="doc__title">Séquence 8 : Transmettre la puissance</span>
+          <span class="doc__desc">TD 8.3 : rappel de la première année, chaînes fonctionnelles, modélisation.</span>
+          <span class="doc__theme">Thème : Mécanique</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+    <li class="doc">
+      <a class="doc__row" href="pdf/BTS_CRSA_DS8.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--fiche">DS</span>
+        <span class="doc__body">
+          <span class="doc__title">Séquence 8 : Transmettre la puissance</span>
+          <span class="doc__desc">DS 8 de la Séquence.</span>
+          <span class="doc__theme">Thème : Mécanique</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+  </ul>
+
+
+  <h4 class="subsection">Séquence 9</h4>
+  <ul class="docs">
+    <li class="doc">
+      <a class="doc__row" href="pdf/BTS_CRSA_S9_fiche.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--fiche">Fiche</span>
+        <span class="doc__body">
+          <span class="doc__title">Séquence 9 : Comment amener la matière d'œuvre au bon endroit au bon moment ?</span>
+          <span class="doc__desc">Fiche de synthèse pour la Séquence 9.</span>
+          <span class="doc__theme">Thème : Cinématique</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+    <li class="doc">
+      <a class="doc__row" href="pdf/BTS_CRSA_TD9.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--td">TD</span>
+        <span class="doc__body">
+          <span class="doc__title">Séquence 9 : Comment amener la matière d'œuvre au bon endroit au bon moment ?</span>
+          <span class="doc__desc">TD 9 de la Séquence.</span>
+          <span class="doc__theme">Thème : Cinématique</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+  </ul>
+
+
+  <h4 class="subsection">Séquence 10</h4>
+  <ul class="docs">
+    <li class="doc">
+      <a class="doc__row" href="pdf/BTS_CRSA_cours_10.pdf" target="_blank" rel="noopener">
+        <span class="tag tag--cours">Cours</span>
+        <span class="doc__body">
+          <span class="doc__title">Séquence 10 : Comment choisir le bon matériau dans mon système ?</span>
+          <span class="doc__desc">Cours sur la Partie 1 : Disponibilité et structure </span>
+          <span class="doc__theme">Thème : Sciences des matériaux</span>
+        </span>
+        <span class="dl">Télécharger</span>
+      </a>
+    </li>
+
+  </ul>
+
+  
+
+
+
+
+</section>
+
+
+<!-- ───────── ACCUEIL (à laisser en dernier dans le code) ───────── -->
+<section class="home" id="accueil">
+  <h2>Bienvenue</h2>
+  <p class="hello">Bonjour et bienvenue.</p>
+  <p>Ces pages rassemblent les cours, TD et fiches de synthèse distribués en classe, de la seconde au BTS.</p>
+
+  <p class="notice"><strong>Site en construction.</strong> Certaines pages sont encore vides ; les documents sont ajoutés au fil de l'année.</p>
+
+  <h3 class="index-title">Choisir sa classe</h3>
+  <div class="index">
+    <div>
+      <h4><a href="#seconde">Seconde</a></h4>
+      <ul>
+        <li><a href="#seconde-nsi">NSI</a></li>
+        <li><a href="#seconde-si">SI</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4><a href="#specialite">Spécialité SI</a></h4>
+      <ul>
+        <li><a href="#specialite">1re et 2e année</a></li>
+      </ul>
+    </div>
+    <!-- Pour réafficher STI2D dans l'accueil, remplacez cette ligne par <div>. -->
+    <div class="masque-temporairement">
+      <h4><a href="#sti2d">STI2D</a></h4>
+      <ul>
+        <li><a href="#sti2d">1re et 2e année</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4><a href="#bts">BTS</a></h4>
+      <ul>
+        <li><a href="#bts-cprp">CPRP</a></li>
+        <li><a href="#bts-crsa">CRSA</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<!-- ══════════ PIED DE PAGE : cartouche ══════════ -->
+<footer class="cartouche">
+  <div class="cartouche__grid">
+    <div class="cartouche__cell cartouche__cell--wide">
+      <small>Sciences industrielles de l'ingénieur</small>
+      <strong>Kozel Web</strong>
+    </div>
+    <div class="cartouche__cell">
+      <small>Statut</small>
+      <strong>En construction</strong>
+    </div>
+    <div class="cartouche__cell">
+      <small>Niveaux</small>
+      <strong>Seconde à BTS</strong>
+    </div>
+    <div class="cartouche__cell">
+      <small>Documents</small>
+      <strong>Cours - TD - DS</strong>
+    </div>
+    <div class="cartouche__cell">
+      <small>Droits</small>
+      <strong>© 2026 Kozel Web</strong>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
